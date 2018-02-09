@@ -1,4 +1,13 @@
 import {MERRIAM_WEBSTER_API_KEY as API_KEY} from '../config.json';
+import {parseString} from 'xml2js';
+
+const parseXML = (text) => {
+    return new Promise((resolve) => {
+        parseString(text, (err, result) => {
+            resolve(result);
+        });
+    });
+}
 
 export const searchEnglishTerm = (term) => {
     return new Promise((resolve, reject) => {
@@ -6,7 +15,7 @@ export const searchEnglishTerm = (term) => {
   
         fetch(url)
         .then(response => response.text())
-        .then((str) => (new window.DOMParser()).parseFromString(str, 'text/xml'))
+        .then(parseXML)
         .then((data) => {
             console.log(data);
             resolve(JSON.stringify(data, null, 2));
