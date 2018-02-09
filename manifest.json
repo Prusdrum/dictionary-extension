@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "My trusted extension",
+  "description": "Aggregate results from my trusted language resources",
+  "version": "1.0",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ]
+}

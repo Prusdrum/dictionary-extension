@@ -1,0 +1,20 @@
+{
+  "name": "trusted-translator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "popup.js",
+  "dependencies": {
+    "knockout": "3.5.0-beta"
+  },
+  "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-preset-env": "1.6.1",
+    "webpack": "3.10.0"
+  },
+  "scripts": {
+    "start": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}

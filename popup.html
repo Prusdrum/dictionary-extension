@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    
+  </head>
+
+  <body class="mainBody" id="mainBody">
+    <h1>This is my trusted language resource</h1>
+
+    <form class="form">
+      <label class="form-label" for="termInput">Term to translate</label>
+      <input id="termInput" type="text" class="form-control" data-bind="value: term"/>
+      <button class="btn btn-primary mt-2" type="submit" id="searchBtn" data-bind="click: search">Search</button>
+    </div>
+
+    <div data-bind="text: results">
+      
+    </div>
+    <script src="dist/popup.js"></script>
+  </body>
+</html>
