@@ -4,6 +4,7 @@
   "description": "",
   "main": "popup.js",
   "dependencies": {
+    "cheerio": "1.0.0-rc.2",
     "knockout": "3.5.0-beta",
     "xml2js": "0.4.19"
   },
