@@ -10,31 +10,55 @@
   <body class="mainBody" id="mainBody">
     <h1>This is my trusted language resource</h1>
 
-    <form class="form">
+    <form class="form border-bottom pb-2">
       <label class="form-label" for="termInput">Term to translate</label>
       <input id="termInput" type="text" class="form-control" data-bind="value: term"/>
       <button class="btn btn-primary mt-2" type="submit" id="searchBtn" data-bind="click: search, disable: loading">
         <span data-bind="text: loading() ? 'Loading' : 'Search'"></span>
       </button>
-    </div>
+    </form>
 
     <!-- ko if: !loading() -->
-    <ul data-bind="foreach: results" class="mt-2 list-group">
-      <li class="list-group-item">
-          <strong>Term: </strong>
-          <span data-bind="text: term"></span>
-          <!-- ko if: pronunciation -->
-          <span data-bind="text: '/' + pronunciation + '/'"></span>
-          <!-- /ko -->
-      </li>
-    </ul>
-    <!-- /ko -->
+    <div class="mt-2" data-bind="if: !loading() && hasSearchedSomething()">
+      
+      <div data-bind="if: !loading()" class="mt-3 mb-3">
+        <h2 class="text-center">EN -> PL</h2>
+        <ul data-bind="foreach: translations" class="mt-2 list-group">
+          <li class="list-group-item">
+              <strong data-bind="text: term"></strong>:
+              <span data-bind="text: translations.join(', ')"></span>
+          </li>
+        </ul>
+      </div>
 
-    <!-- ko if: !loading() && hasSearchedSomething() && results().length === 0 -->
-    <div>
-      <h2>No results...</h2>
+      <div class="mt-3 mb-3" data-bind="if: !loading()">
+        <h2 class="text-center">EN dictionary</h2>
+        <ul data-bind="foreach: results" class="mt-2 list-group">
+          <li class="list-group-item">
+            <div>
+              <strong data-bind="text: term"></strong>
+              <!-- ko if: pronunciation -->
+              <span data-bind="text: '/' + pronunciation + '/'"></span>
+              <!-- /ko -->
+            </div>
+            <div data-bind="if: definition">
+              <blockquote class="blockquote">
+                <p data-bind="text: definition"></p>
+              </blockquote>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ko if: !loading() && results().length === 0 -->
+      <div>
+        <h2>No results...</h2>
+      </div>
+      <!-- /ko -->
     </div>
     <!-- /ko -->
+    
+    
     <script src="dist/popup.js"></script>
   </body>
 </html>
