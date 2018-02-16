@@ -1,19 +1,25 @@
-import {searchEnglishTerm} from './dictionary';
+import {searchEnglishTerm} from './api/dictionary';
 import ko from 'knockout';
 
 export default class DictionaryViewModel {
     constructor() {
       this.term = ko.observable('');
-      this.results = ko.observable('');
+      this.results = ko.observableArray([]);
+      this.hasSearchedSomething = ko.observable(false);
+
+      this.loading = ko.observable(false);
     }
   
     search() {
+      this.hasSearchedSomething(true);
+      this.loading(true);
       searchEnglishTerm(this.term())
-      .then((results) => this.setResults(results));
+      .then((results) => {
+        console.log(results);
+        this.results(results);
+        this.loading(false);
+      });
     }
-  
-    setResults(results) {
-      this.results(results);
-    }
+
   } 
   

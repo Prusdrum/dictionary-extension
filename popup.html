@@ -13,12 +13,28 @@
     <form class="form">
       <label class="form-label" for="termInput">Term to translate</label>
       <input id="termInput" type="text" class="form-control" data-bind="value: term"/>
-      <button class="btn btn-primary mt-2" type="submit" id="searchBtn" data-bind="click: search">Search</button>
+      <button class="btn btn-primary mt-2" type="submit" id="searchBtn" data-bind="click: search, disable: loading">
+        <span data-bind="text: loading() ? 'Loading' : 'Search'"></span>
+      </button>
     </div>
 
-    <div data-bind="text: results">
-      
+    <!-- ko if: !loading() -->
+    <ul data-bind="foreach: results" class="mt-2 list-group">
+      <li class="list-group-item">
+          <strong>Term: </strong>
+          <span data-bind="text: term"></span>
+          <!-- ko if: pronunciation -->
+          <span data-bind="text: '/' + pronunciation + '/'"></span>
+          <!-- /ko -->
+      </li>
+    </ul>
+    <!-- /ko -->
+
+    <!-- ko if: !loading() && hasSearchedSomething() && results().length === 0 -->
+    <div>
+      <h2>No results...</h2>
     </div>
+    <!-- /ko -->
     <script src="dist/popup.js"></script>
   </body>
 </html>
