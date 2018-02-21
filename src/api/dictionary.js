@@ -21,5 +21,5 @@ export const searchEnglishTerm = (term) => {
     return fetch(url)
     .then(response => response.text())
     .then(parseXML)
-    .then(mapEntryResponse);
+    .then(mapEntryResponse(term));
 }

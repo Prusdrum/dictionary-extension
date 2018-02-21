@@ -32,17 +32,18 @@ const mapSelf = (self) => {
 }
 
 const mapHeadword = (headword) => {
-    if (isString(headword[0])) {
+    const headwordNode = headword[0];
+    if (isString(headwordNode)) {
         //no highlight
         return {
-            self: headword[0],
+            self: headwordNode,
             highlight: false
         }
     } else {
         //highlight
         return {
-            self: headword[0]._,
-            highlight: true
+            self: headwordNode._,
+            highlight: headwordNode.$.highlight === "yes"
         }
     }
 }
@@ -80,24 +81,25 @@ const mapResponse = (entry) => {
     }
 }
 
-const mapModel = (entry) => {
+const mapModel = (term) => (entry) => {
     return {
         pronunciation: entry.pronunciation,
         partOfSpeech: entry.functionalLabel,
+        highlight: entry.headword.highlight || entry.headword.self === term,
         term: entry.self ? entry.self : '',
         definition: getDefinition(entry)
     }
 }
 
 
-export default (data) => {
+export default (term) => (data) => {
     if (data.entry_list.entry) {
         console.log('raw', data.entry_list.entry);
         console.log( data.entry_list.entry
             .map(mapResponse));
         return data.entry_list.entry
             .map(mapResponse)
-            .map(mapModel);
+            .map(mapModel(term));
     } else {
         return [];
     }
