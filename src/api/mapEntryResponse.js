@@ -1,32 +1,6 @@
 import isString from 'lodash/isString';
 import isUndefined from 'lodash/isUndefined';
 
-const getDefinition = (entry) => {
-    if (entry.definition && entry.definition[0] && entry.definition[0].dt) {
-        const dt = entry.definition[0].dt[0];
-
-        if (dt._) {
-            return dt._;
-        }
-
-        if (typeof dt === 'string') {
-            return dt;
-        }
-
-    } else {
-        if (entry.definedRunOn[0] && entry.definedRunOn[0].def && entry.definedRunOn[0].def[0]) {
-            const def = entry.definedRunOn[0].def[0];
-    
-            if (def.dt && def.dt[0] && def.dt[0].un && def.dt[0].un[0] && def.dt[0].un[0]._) {
-                return def.dt[0].un[0]._;
-            }
-        }
-    }
-
-    return '';
-}
-
-
 const mapSelf = (self) => {
     return self.id;
 }
@@ -69,13 +43,51 @@ const mapPronounciation = (pronunciation) => {
     }
 }
 
+const mapDefiningText = (definingText) => {
+    if (isUndefined(definingText)) {
+        return {
+            text: '',
+            verbalIllustration: null,
+            usageNode: null
+        }
+    } else if (isString(definingText[0])) {
+        return {
+            text: definingText[0],
+            verbalIllustration: null,
+            usageNode: null
+        }
+    } else {
+        const node = definingText[0];
+
+        return {
+            text: node._,
+            verbalIllustration: node.vi,
+            usageNode: node.un
+        }
+    }
+}
+
+const mapDefinition = (definition) => {
+    if (isUndefined(definition)) {
+        return {
+            definingText: mapDefiningText()
+        }
+    } else {
+        const definitionNode = definition[0];
+
+        return {
+            definingText: mapDefiningText(definitionNode.dt)
+        }
+    }
+}
+
 const mapResponse = (entry) => {
     return {
         self: mapSelf(entry.$),
         headword: mapHeadword(entry.hw),
         functionalLabel: mapFunctionalLabel(entry.fl),
         pronunciation: mapPronounciation(entry.pr),
-        definition: entry.def,
+        definition: mapDefinition(entry.def),
         definedRunOn: entry.dro,
         inflection: entry.in
     }
@@ -87,7 +99,7 @@ const mapModel = (term) => (entry) => {
         partOfSpeech: entry.functionalLabel,
         highlight: entry.headword.highlight || entry.headword.self === term,
         term: entry.self ? entry.self : '',
-        definition: getDefinition(entry)
+        definition: entry.definition.definingText.text
     }
 }
 
