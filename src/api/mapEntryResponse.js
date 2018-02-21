@@ -82,7 +82,7 @@ const mapResponse = (entry) => {
 
 const mapModel = (entry) => {
     return {
-        pronunciation: entry.pronunciation ? entry.pronunciation[0] : '',
+        pronunciation: entry.pronunciation,
         partOfSpeech: entry.functionalLabel,
         term: entry.self ? entry.self : '',
         definition: getDefinition(entry)
