@@ -15,20 +15,11 @@ const termTypes = {
     VERB: 'verb'
 }
 
-
-const mapResponse = (data) => {
-    if (data.entry_list.entry) {
-        return data.entry_list.entry.map(mapEntryResponse);
-    } else {
-        return [];
-    }
-}
-
 export const searchEnglishTerm = (term) => {
     const url =  `https://www.dictionaryapi.com/api/v1/references/learners/xml/${term}?key=${API_KEY}`;
   
     return fetch(url)
     .then(response => response.text())
     .then(parseXML)
-    .then(mapResponse);
+    .then(mapEntryResponse);
 }

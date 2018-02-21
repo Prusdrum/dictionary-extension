@@ -1,6 +1,6 @@
 const getDefinition = (entry) => {
-    if (entry.def && entry.def[0] && entry.def[0].dt) {
-        const dt = entry.def[0].dt[0];
+    if (entry.definition && entry.definition[0] && entry.definition[0].dt) {
+        const dt = entry.definition[0].dt[0];
 
         if (dt._) {
             return dt._;
@@ -11,9 +11,8 @@ const getDefinition = (entry) => {
         }
 
     } else {
-        if (entry.dro[0] && entry.dro[0].def && entry.dro[0].def[0]) {
-            const def = entry.dro[0].def[0];
-            console.log(def);
+        if (entry.definedRunOn[0] && entry.definedRunOn[0].def && entry.definedRunOn[0].def[0]) {
+            const def = entry.definedRunOn[0].def[0];
     
             if (def.dt && def.dt[0] && def.dt[0].un && def.dt[0].un[0] && def.dt[0].un[0]._) {
                 return def.dt[0].un[0]._;
@@ -25,11 +24,35 @@ const getDefinition = (entry) => {
 }
 
 
-export default (entry) => {
+const mapResponse = (entry) => {
     return {
-        pronunciation: entry.pr ? entry.pr[0] : '',
-        partOfSpeech: entry.fl ? entry.fl[0]: '',
-        term: entry.$ ? entry.$.id : '',
+        headword: entry.hw,
+        pronunciation: entry.pr,
+        definition: entry.def,
+        definedRunOn: entry.dro,
+        inflection: entry.in,
+        functionalLabel: entry.fl,
+        self: entry.$
+    }
+}
+
+
+const mapModel = (entry) => {
+    return {
+        pronunciation: entry.pronunciation ? entry.pronunciation[0] : '',
+        partOfSpeech: entry.functionalLabel ? entry.functionalLabel[0]: '',
+        term: entry.self ? entry.self.id : '',
         definition: getDefinition(entry)
+    }
+}
+
+
+export default (data) => {
+    if (data.entry_list.entry) {
+        return data.entry_list.entry
+            .map(mapResponse)
+            .map(mapModel);
+    } else {
+        return [];
     }
 }
